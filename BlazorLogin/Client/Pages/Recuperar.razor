@@ -1,0 +1,94 @@
+﻿@page "/recuperar"
+@using Microsoft.AspNetCore.Authorization
+@layout LoginLayout
+
+@inject HttpClient httpClient
+@inject NavigationManager navManager
+@inject IJSRuntime JSRuntime
+@using BlazorLogin.Client.Extensiones
+@using BlazorLogin.Shared
+@using System.Text.Json
+
+<PageTitle>Recuperar</PageTitle>
+
+<h1>Recuperar Contraseña</h1>
+
+<form @onsubmit="@(async () => await RecuperarContraseña())">
+    <div class="mb-3">
+        <label for="mascota">Nombre de tu primera mascota?</label>
+        <input id="mascota" @bind="respuestas.PrimeraMascota" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="comida">Comida favorita?</label>
+        <input id="comida" @bind="respuestas.ComidaFavorita" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="color">Color favorito?</label>
+        <input id="color" @bind="respuestas.ColorFavorito" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="new_password">Nueva Contraseña</label>
+        <input id="color" class="form-control" />
+
+    </div>
+    <div class="mb-3">
+        <button @onclick="RecuperarContraseña" class="btn btn-primary">Recuperar Contraseña</button>
+    </div>
+</form>
+
+<button @onclick="home" class="btn btn-secondary mt-3">Home</button>
+
+@if (mostrarNotificacion)
+{
+    <div class="alert alert-@notificacionTipo mt-3">
+        @notificacionMensaje
+    </div>
+}
+
+@code {
+    private RespuestasRecuperacion respuestas = new RespuestasRecuperacion();
+    private bool mostrarNotificacion = false;
+    private string notificacionMensaje = "";
+    private string notificacionTipo = "";
+
+    private async Task RecuperarContraseña()
+    {
+        // Respuestas predeterminadas
+        string respuestaMascota = "amigo";
+        string respuestaComida = "encebollado";
+        string respuestaColor = "negro";
+
+        // Comprobar si las respuestas coinciden con las predeterminadas
+        if (respuestas.PrimeraMascota == respuestaMascota &&
+            respuestas.ComidaFavorita == respuestaComida &&
+            respuestas.ColorFavorito == respuestaColor)
+        {
+            // Respuestas correctas, mostrar notificación de contraseña cambiada
+            ShowMessageBox("Contraseña cambiada con éxito");
+
+        }
+        else
+        {
+            ShowMessageBox("Contraseña no cambiada");
+        }
+    }
+
+    private void ShowMessageBox(string message)
+    {
+        // Llamar al método JavaScript interop para mostrar el MessageBox
+        JSRuntime.InvokeVoidAsync("showMessageBox", message);
+    }
+
+    private async void home()
+    {
+        navManager.NavigateTo("/");
+    }
+
+    public class RespuestasRecuperacion
+    {
+        public string PrimeraMascota { get; set; }
+        public string ComidaFavorita { get; set; }
+        public string ColorFavorito { get; set; }
+    }
+}
+

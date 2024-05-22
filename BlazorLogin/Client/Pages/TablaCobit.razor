@@ -1,0 +1,81 @@
+﻿@page "/cobit1"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<PageTitle>COBIT 1</PageTitle>
+
+<h1>Marco de Trabajo (COBIT)</h1>
+
+<div class="container">
+    <label for="rowCount">Número de filas:</label>
+    <input type="number" id="rowCount" @bind="rowCount" min="6" max="11" />
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th></th>
+                @for (int j = 0; j < 13; j++)
+                {
+                    <th>EG@(j < 9 ? "0" : "")@(j + 1)</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 1; i < rowCount; i++)
+            {
+                <tr>
+                    <td>ME@(i < 9 ? "0" : "")@(i)</td>
+                    @for (int j = 1; j < 14; j++)
+                    {
+                        <td>
+                            @if (i != 0 && j != 0)
+                            {
+                                <input type="text" @bind="valores[i - 1, j - 1]" style="width: 30px" />
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <p>
+        <ul>
+            <li>EG01: Portafolios de productos y servicios competitivos</li>
+            <li>EG02: Gestión de riesgos de negocio</li>
+            <li>EG03: Cumplimiento de las leyes y regulaciones externas</li>
+            <li>EG04: Calidad de la información financiera</li>
+            <li>EG05: Cultura de servicio orientada al cliente</li>
+            <li>EG06: Continuidad y disponibilidad del servicio del negocio</li>
+            <li>EG07: Calidad de la información sobre gestión</li>
+            <li>EG08: Optimización de la funcionalidad de procesos internos del negocio</li>
+            <li>EG09: Optimización de costes de los procesos del negocio</li>
+            <li>EG10: Habilidades, motivación y productividad del personal </li>
+            <li>EG11: Cumplimiento de las políticas internas</li>
+            <li>EG12: Gestión de programas de trasformación digital</li>
+            <li>EG13: Innovación de productos y negocios</li>
+        </ul>
+    </p>
+</div>
+<div>
+    @for (int i = 1; i <= 10; i++)
+    {
+        <label for="txtME@(i)">ME@(i)</label>
+        <input type="text" id="txtME@(i)" />
+        <br />
+    }
+</div>
+
+<button class="btn btn-primary" @onclick="AgregarDatos">Agregar</button>
+
+@code {
+    private int rowCount = 7;
+    private string[,] valores = new string[12, 14]; // Matriz para almacenar los valores de los cuadros de texto
+
+    private async Task AgregarDatos()
+    {
+        
+    }
+
+}

@@ -1,0 +1,46 @@
+﻿@page "/Index"
+
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@attribute [Authorize]
+
+
+<PageTitle>Index</PageTitle>
+
+<h1>MARCO DE TRABAJO COBIT </h1>
+
+Welcome to your new app.
+
+<AuthorizeView>
+    <Authorized>
+        <h1>Bienvenido @context.User.Identity!.Name</h1>
+        @if (context.User.IsInRole("Administrador"))
+        {
+            <p>Administrador.</p>
+        }
+        else
+        {
+            <p>Uuario.</p>
+        }
+    </Authorized>
+</AuthorizeView>
+
+
+
+<SurveyPrompt Title="COBIT" />
+<p>
+    COBIT (Control Objectives for Information and Related Technologies) es un marco de gobierno y gestión de 
+    tecnología de la información (TI) desarrollado por ISACA (Asociación de Auditoría y Control de Sistemas 
+    de Información) que proporciona un conjunto de prácticas y lineamientos para ayudar a las organizaciones 
+    a asegurar que sus sistemas de información sean efectivos, eficientes y seguros. COBIT se basa en principios 
+    de control y gestión de riesgos, y se centra en alinear las actividades de TI con los objetivos comerciales 
+    de la organización.
+</p>
+<h2>Beneficios:</h2>
+<ul>
+    <li>Mejora de la alineación TI y los obejtivos comerciales.</li>
+    <li>Proporciona un marco estructurado para la gobernanza de TI.</li>
+    <li>Ayuda a identificar y mitigar riesgos relacionados con la TI.</li>
+    <li>Facilita la comprensión de los roles y responsabilidades dentro de la organización.</li>
+    <li>Promueve la transparencia y la rendición de cuentas en la gestión de la información y la tecnología.</li>
+</ul>

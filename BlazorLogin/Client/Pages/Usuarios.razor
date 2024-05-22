@@ -1,0 +1,63 @@
+﻿@page "/usuarios"
+@using BlazorLogin.Shared
+@inject HttpClient Http
+@using Microsoft.AspNetCore.Authorization;
+@attribute [Authorize(Roles = "Administrador")]
+
+<PageTitle>Registro de Usuarios</PageTitle>
+
+<h1>Usuarios</h1>
+
+@if (users == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Índice</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < users.Length; i++)
+            {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>@users[i].Nombre</td>
+                    <td>@users[i].Correo</td>
+                    <td>@users[i].Rol</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private SesionDTO[] users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Crear un objeto LoginDTO con datos ficticios (cambiar según sea necesario)
+        var login = new LoginDTO { Correo = "admin@gmail.com", Clave = "admin" };
+
+        // Enviar una solicitud POST al método Login en el controlador UsuarioController
+        var response = await Http.PostAsJsonAsync("api/usuario/Login", login);
+
+        // Verificar si la solicitud fue exitosa (código de estado 200)
+        if (response.IsSuccessStatusCode)
+        {
+            // Leer el contenido de la respuesta como un arreglo de SesionDTO
+            users = await response.Content.ReadFromJsonAsync<SesionDTO[]>();
+        }
+        else
+        {
+            // Manejar el error de manera apropiada
+            // Por ejemplo, mostrar un mensaje de error o registrar el error
+        }
+    }
+}
